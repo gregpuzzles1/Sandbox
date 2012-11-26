@@ -1,0 +1,967 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Contemplate His Majestic Personhood</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="inc/jquery.metadata.js"></script>
+<script type="text/javascript" src="inc/jquery.hoverIntent.js"></script>
+<script type="text/javascript" src="inc/mbMenu.js"></script>
+
+<!--
+<link rel="stylesheet" type="text/css" href="css/menu_black.css" media="screen" />
+-->
+<link rel="stylesheet" type="text/css" href="css/menu_black.css" media="screen" />
+<!-- My Style sheet -->
+<link rel="stylesheet" type="text/css" href="css/growing_godly.css" />
+
+
+<style type="text/css">
+/*
+  body  a.style{
+    color:#AF3002;
+    font-family:sans-serif;
+    font-size:13px;
+    text-decoration:none;
+  }
+  */
+</style>
+
+<style type="text/css">
+/*
+  body  a.style{
+    color:#AF3002;
+    font-family:sans-serif;
+    font-size:13px;
+    text-decoration:none;
+  }
+*/
+  .wrapper{
+    font-family:Arial, Helvetica, sans-serif;
+    margin-top:20px;
+    margin-left:30px;
+  }
+
+  .wrapper h1{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:26px;
+  }
+  button{
+    padding:4px;
+    display:inline-block;
+    cursor:pointer;
+    font:12px/14px Arial, Helvetica, sans-serif;
+    color:#666;
+    border:1px solid #999;
+    background-color:#eee;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    -moz-box-shadow:#999 2px 0px 3px;
+    -webkit-box-shadow:#999 2px 0px 3px;
+    margin-bottom:4px;
+  }
+  button:hover{
+    color:#aaa;
+    background-color:#000;
+  }
+  :focus {
+    outline: 0;
+  }
+
+  span.btn{
+    padding:10px;
+    display:inline-block;
+    cursor:pointer;
+    font:12px/14px Arial, Helvetica, sans-serif;
+    color:#aaa;
+    background-color:#eee;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    -moz-box-shadow:#999 2px 0px 3px;
+    -webkit-box-shadow:#999 2px 0px 3px;
+  }
+  span.btn:hover{
+    background-color:#000;
+  }
+  
+  .msgBox{
+    position:absolute;
+    width:250px;
+    height:60px;
+    background:black;
+    -moz-box-shadow:#999 2px 0px 3px;
+    -webkit-box-shadow:#999 2px 0px 3px;    
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    padding:10px;
+    padding-top:30px;
+    top:10px;
+    right:10px;
+    font:20px/24px Arial, Helvetica, sans-serif;
+  }
+
+</style>
+
+<script type="text/javascript">
+
+  /*
+   * DEFAULT OPTIONS
+   *
+   options: {
+   template:"yourMenuVoiceTemplate",--> the url that returns the menu voices via ajax. the data passed in the request is the "menu" attribute value as "menuId"
+   additionalData:"",								--> if you need additional data to pass to the ajax call
+   menuSelector:".menuContainer",		--> the css class for the menu container
+   menuWidth:150,										--> min menu width
+   openOnRight:false,								--> if the menu has to open on the right insted of bottom
+   iconPath:"ico/",									--> the path for the icons on the left of the menu voice
+   hasImages:true,									--> if the menuvoices have an icon (a space on the left is added for the icon)
+   fadeInTime:100,									--> time in milliseconds to fade in the menu once you roll over the root voice
+   fadeOutTime:200,									--> time in milliseconds to fade out the menu once you close the menu
+   menuTop:0,												--> top space from the menu voice caller
+   menuLeft:0,											--> left space from the menu voice caller
+   submenuTop:0,										--> top space from the submenu voice caller
+   submenuLeft:4,										--> left space from the submenu voice caller
+   opacity:1,												--> opacity of the menu
+   shadow:false,										--> if the menu has a shadow
+   shadowColor:"black",							--> the color of the shadow
+   shadowOpacity:.2,								--> the opacity of the shadow
+   openOnClick:true,								--> if the menu has to be opened by a click event (otherwise is opened by a hover event)
+   closeOnMouseOut:false,						--> if the menu has to be cloesed on mouse out
+   closeAfter:500,									--> time in millisecond to whait befor closing menu once you mouse out
+   minZindex:"auto", 								--> if set to "auto" the zIndex is automatically evaluate, otherwise it start from your settings ("auto" or int)
+   hoverInted:0, 										--> if you use jquery.hoverinted.js set this to time in milliseconds to delay the hover event (0= false)
+   onContextualMenu:function(o,e){} --> a function invoked once you call a contextual menu; it pass o (the menu you clicked on) and e (the event)
+   },
+   */
+
+  $(function(){
+    $(".myMenu").buildMenu(
+    {
+      template:"menuVoices.html",
+      additionalData:"pippo=1",
+      menuWidth:200,
+      openOnRight:false,
+      menuSelector: ".menuContainer",
+      iconPath:"ico/",
+      hasImages:true,
+      fadeInTime:100,
+      fadeOutTime:300,
+      adjustLeft:2,
+      minZindex:"auto",
+      adjustTop:10,
+      opacity:.95,
+      shadow:false,
+      shadowColor:"#ccc",
+      hoverIntent:0,
+      openOnClick:true,
+      closeOnMouseOut:false,
+      closeAfter:1000,
+      submenuHoverIntent:200
+    });
+
+    $(document).buildContextualMenu(
+    {
+      template:"menuVoices.html",
+      menuWidth:200,
+      overflow:2,
+      menuSelector: ".menuContainer",
+      iconPath:"ico/",
+      hasImages:false,
+      fadeInTime:100,
+      fadeOutTime:100,
+      adjustLeft:0,
+      adjustTop:0,
+      opacity:.99,
+      closeOnMouseOut:false,
+      onContextualMenu:function(o,e){}, //params: o = the contextual menu,e = the event
+      shadow:false
+    });
+  });
+
+  //this function get the id of the element that fires the context menu.
+  function testForContextMenu(el){
+    if (!el) el= $.mbMenu.lastContextMenuEl;
+    alert("the ID of the element is:   "+$(el).attr("id"));
+  }
+
+  function recallcMenu(el){
+    if (!el) el= $.mbMenu.lastContextMenuEl;
+    var cmenu=+$(el).attr("cmenu");
+    $(cmenu).remove();
+  }
+
+</script>
+
+<style type="text/css">
+/*font-family: Segoe UI;
+font-size: 10pt; */
+body {
+color: #000000;
+margin-left: 10 px;
+margin-top: 15 px;
+background-position: top left;
+background-repeat: repeat;
+}
+</style>
+
+</head>
+
+<body id="ridBody" background="images/yellow_tiles.jpg">
+<a id="top"></a>
+<p></p>
+<div class="wrapper">
+	<!--
+  <h1 style="color:fuchsia; width:867px">Christian Living Devotionals</h1>
+
+change css:
+
+  <button onclick="$('[rel=stylesheet]').attr('href','css/menu_red.css')">red</button>
+  <button onclick="$('[rel=stylesheet]').attr('href','css/menu_black.css')">black</button>
+  -->
+
+  <table  width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#EDEDED">
+    <tr>
+     <td width="180" height="33" style="padding:10px" class="style">
+    Christian Living Devotionals
+
+        </td>
+  
+      <td valign="bottom">
+        <table  border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" class="container">
+          <tr>
+            <td class="myMenu">
+
+              <!-- start horizontal menu -->
+
+              <table class="rootVoices" cellspacing='0' cellpadding='0' border='0'>
+             <tr>
+							<td class="rootVoice {menu: 'empty'}" onclick="window.open('index.html', target='_self');" >Home</td>
+							<td class="rootVoice {menu: 'menu_2'}" >Chapters</td>
+							<td class="rootVoice {menu: 'menu_3'}" >Appendices</td>
+							<td class="rootVoice {menu: 'menu_4'}" >Resources</td>
+							<td class="rootVoice {menu: 'empty'}" onclick="window.open('blog/', target='_self');" >Blog</td>
+								</tr>
+			 <!--
+              <tr>
+                <td class="rootVoice {menu: 'box_menu'}" >box menu</td>
+                <td class="rootVoice {menu: 'menu_12'}" >ajax menu</td>
+                <td class="rootVoice {menu: 'menu_2'}" >menu 1</td>
+                <td class="rootVoice {menu: 'menu_2', disabled:true}" >menu disabled</td>
+                <td class="rootVoice {menu: 'menu_3'}" >menu 2</td>
+                <td class="rootVoice {menu: 'empty'}" onclick="showMessage('empty root menu')">empty menu</td>
+              </tr> -->
+              </table>
+
+              <!-- end horizontal menu -->
+
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<!--
+<div class=""style="width: 530px; border: 0px dotted red; position: absolute; left: 250px; top: 70px">
+-->
+  <!-- ************************************************************ Start Devotional ****************************************************************************** -->
+  
+<div style="float:right; margin-top:5px">  
+<style type="text/css">
+@import url(http://www.google.com/cse/api/branding.css);
+</style>
+<div class="cse-branding-right" style="background-color:#FFFFFF;color:#000000">
+  <div class="cse-branding-form">
+    <form action="http://www.google.com/cse" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="partner-pub-3376941055410928:7759915125" />
+        <input type="hidden" name="ie" value="UTF-8" />
+        <input type="text" name="q" size="55" />
+        <input type="submit" name="sa" value="Search" />
+      </div>
+    </form>
+  </div>
+  <div class="cse-branding-logo">
+    <img src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" alt="Google" />
+  </div>
+  <div class="cse-branding-text">
+    Search this site
+  </div>
+</div>
+</div>
+
+
+<div style="width: 980px; border: 0px dotted red; position: absolute; left: 30px; top: 130px">
+	<h3>Chapter One</h3>
+	<table cellpadding="5" cellspacing="7" class="contents" style="width: 100%">
+		<tr>
+			<th colspan="4" style="text-align: center; font-size: large">Contemplate 
+			His Majestic Personhood</th>
+		</tr>
+		<tr>
+			<td><a href="#eight">Communing Moment By Moment With The Lord</a></td>
+			<td>8</td>
+			<td><a href="#sixteen">Think!</a></td>
+			<td>16</td>
+		</tr>
+		<tr>
+			<td><a href="#ten">Being In Christ Is First - &#39;Doing&#39; For Christ Is 
+			Second</a></td>
+			<td>10</td>
+			<td><a href="#eighteen">The Power And Glory Of Praise And Worship</a></td>
+			<td>18</td>
+		</tr>
+		<tr>
+			<td><a href="#twelve">Service - The Overflow Of Love For God!</a></td>
+			<td>12</td>
+			<td><a href="#twenty">Maintain The Spiritual Glow</a></td>
+			<td>20</td>
+		</tr>
+		<tr>
+			<td><a href="#fourteen">Sitting Often At Jesus&#39; Feet</a></td>
+			<td>14</td>
+			<td><a href="#twenty-two">Discussion Questions</a></td>
+			<td>22</td>
+		</tr>
+	</table>
+	<hr />
+	<div class="devotional" style="width: 630px; border: 0px dotted red; position: absolute; left: 250px; top: 300px">
+	<a id="eight"></a>
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span></p>
+	<p>Psalms 143:5-10; Colossians 1:27</p>
+	<h3>Communing Moment By Moment With The Lord</h3>
+	<p>The Psalmist says, <em>&quot;...Do not hide Thy face from me, lest I become like 
+	those who go down to the pit. Let me hear Thy loving kindness in the morning; 
+	for I trust in Thee; teach me the way in which I should walk...&quot;</em> (Psalms 
+	143:7 b- Psalms 143:8, NASB) What does it say to those around us if our lives 
+	as Christians are like unbelievers&#39; lives, or, in the dramatic words of the 
+	Psalm, like those who go down to the pit? What if we are not very much different 
+	from an ungodly culture generally? If the observer is a thinking person, it 
+	must be obvious: either our God does not exist, or He exists but we are not 
+	in touch with Him.</p>
+	<p>Is the evidence for the grace and power of God lacking in the lives of those 
+	who claim to be his people? Could this be the cause for much of the reluctance 
+	in our culture to take the claims of Christianity seriously? Let us consider 
+	these things in very practical terms: do we spend our resources (e.g., time, 
+	money, love, energy) in a manner significantly different from the unbelievers 
+	around us? Do we commit to and love our spouses in such a way that others take 
+	notice? Do our children reflect a style of parenting that might suggest hope 
+	and answers to an onlooker struggling with her own children? What do we do with 
+	our leisure time? Do our lives generally display a wholeness, a focus, a sense 
+	of purpose that is appealing to someone seeking truth and meaning?</p>
+	<p>If not, then perhaps we should not wonder that there is little motivation 
+	to listen to our earnest &quot;witnessing&quot; about the Lord. There is no evidence. 
+	There is nothing to cause the hearer to believe that what we say is anything 
+	more than a fairy tale of our own making.</p>
+	<p>It is not uncommon, following these uncomfortable observations, for the Christian 
+	to fall back on one or both of two responses: &quot;I shared the message and have 
+	done my part, it is the fault of the other who has chosen to reject God.&quot; Perhaps, 
+	as painful as it is, the listener is simply rejecting us, because our lives 
+	do not demonstrate that we have an answer that is real.</p>
+	<p>The second response is often to say, &quot;Then I must work harder. I must learn 
+	more so that my life will reflect an attractiveness to others. I must get up 
+	earlier, and study harder, and invest more, and surrender more completely.&quot; 
+	And how long will you sustain that effort? And what will be attractive about 
+	a life of exacting discipline, of unending incompleteness, of never being &quot;good 
+	enough&quot;?</p>
+	<p>No, instead let us return to our hypothetical observer in the first paragraph. 
+	Notice what he says. Either God does not exist or we are not in touch with Him. 
+	If God is as</p>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+	8</span></p>
+	<hr style="clear: both" /><br />
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+	<span class="right">Week 17</span></p>
+	<p>we claim Him to be, as we believe the Bible teaches us about Him, and if 
+	were in touch with Him, would that clear up the problem? Surely if we really 
+	knew and were in close communion with out God, our lives would reflect the meaning, 
+	purpose, order, peace, and wholesomeness that is found only in Him. Notice again 
+	what Paul writes: <em>&quot;...Christ in you, the hope of glory.&quot;</em> (Colossians 
+	1:27, NIV) Let us then not work harder or strive more diligently, but let us 
+	commune moment by moment with the Lord, and then allow things to take their 
+	course: for surely as He fills us and indwells us, our lives must reflect some 
+	of His beauty and brightness.</p>
+	<br />
+	<p>&quot;Lord, teach me and help me to be so in tune with you that those around me 
+	cannot help but be drawn to you as they see the way I live. Not through me, 
+	but through you living in me. Amen.&quot; </p>
+	<p><em>AFFIRMATION FOR THE DAY:</em> Jesus Christ in me is all my hope 
+	and strength.</p>
+	<center>- Erik Ritschard -</center>
+	<p>NOTES:</p>
+	<textarea rows="20" cols="60">Type Text Here, Copy &#38; Paste to Your file. (Word, Wordpad, Notepad)</textarea>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+	9</span></p>
+	<hr style="clear: both" /><br />
+	<a id="ten"></a>
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+	<span class="right">Week 17</span></p>
+	<p>Luke 10:38-42, Matthew 11:28-30</p>
+	<h3>Being In Christ Is First - &#39;Doing&#39; For Christ Is Second</h3>
+	<p>Perhaps there are some, who upon reflection on yesterday&#39;s devotion, will 
+	respond, &quot;But surely we must do something. Surely we are meant for more than 
+	just a contemplative life of fellowship with God. Surely we must worship, and 
+	work, and put into action the things that we believe.&quot; And the answer, obviously, 
+	is of course we must Nevertheless the questions remain: What inspires our worship? 
+	What empowers our actions?</p>
+	<p>Are we as Christians pursuing good things because they are our duty, or because 
+	our church expects us to do them, or because we have some vague sense that they 
+	are somehow morally right? Where will be the difference or the attractiveness 
+	in that? Unbelievers strive for personal and social goals as well. They too 
+	often have a sense of duty that inspires discipline and work. They too can translate 
+	their beliefs into action and accomplish &quot;great&quot; things. What then is the difference, 
+	or ought to be the difference, between the lives of unbelievers and of Christians? 
+	What should it be that makes our lives an attractive witness to the saving grace 
+	and power of God?</p>
+	<p>When a person observes the life of an unbeliever who is accomplishing significant 
+	things in the world, he or she must observe, &quot;What a great man!&quot; Or perhaps, 
+	&quot;What marvelous faculties she has!&quot; Or again, &quot;What drive, what ambition!&quot; Yet 
+	in contrast, perhaps when the Christian is observed the comments should be, 
+	&quot;How is this possible?&quot; &quot;What does this mean?&quot; &quot;If only &#39;my life were so ordered 
+	and at peace!&quot;</p>
+	<p>It is not the things we do which will attract others to the Lord. It is who 
+	we are. Anyone can do. Doing can be comparatively easy, especially for a short 
+	time. Being is another matter. How many do you know who are at rest with themselves 
+	and the world? How many are deeply content, at peace, and whole? Do we not earnestly 
+	seek these things? Do we not long for them? Are they not precisely what Jesus 
+	offers to us? Why then do they often seem to be in short supply?</p>
+	<p>Perhaps we Christians often substitute Activity for Being, and in doing so, 
+	reduce or negate the meaning and the value of our activity. To be sure, the 
+	things we do are often &quot;good&quot; things, but are they keeping us from thinking 
+	of and investing in something better? What good is &quot;witnessing&quot; if we witness 
+	only of ourselves? What good is &quot;serving&quot; if we are motivated by our own need 
+	for affirmation and approval? What help will &quot;giving&quot; be if we do so only to 
+	receive something in return?</p>
+	<p>What then is needed? Perhaps we also should choose the part of Mary, who, 
+	sitting at the feet of Jesus, was commended as having &quot;chosen what is better.&quot; 
+	If we were to sit at His feet and find &quot;rest for our souls,&quot; we would become 
+	Whole, a real man or woman who would then be fully equipped to Do in a world 
+	desperately in need of genuine</p>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+	10</span></p>
+	<hr style="clear: both" /><br />
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+	<span class="right">Week 17</span></p>
+	<p>Christianity.</p>
+	<br />
+	<p>&quot;Father, give me understanding as to how I can &quot;sit at your feet&quot; and be 
+	refreshed today. Show me how to make it my priority. Teach me how to delight 
+	myself in you. I give you my whole self to be yours forever. Amen.&quot;</p>
+	<p><em>AFFIRMATION FOR THE DAY:</em> Today I am anticipating the answer 
+	to my prayer as God speaks to me and teaches me.</p>
+	<center>- Erik Ritschard -</center>
+	<p>NOTES:</p>
+	<textarea rows="20" cols="60">Type Text Here, Copy &#38; Paste to Your file. (Word, Wordpad, Notepad)</textarea>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+	11</span></p>
+	<hr style="clear: both" /><br />
+	<a id="twelve"></a>
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+	<span class="right">Week 17</span></p>
+	<p>Luke 10:38-42; Matthew 11:28-30</p>
+	<h3>Service - The Overflow Of Love For God!</h3>
+	<p>We have still left the question of Doing partially unanswered. If Christians 
+	focus on sitting at Jesus&#39; feet, how will the work get done? Someone in Mary 
+	and Martha&#39;s house probably asked the same question. Can you hear the muttering? 
+	&quot;Terrific, so we all sit at Jesus&#39; feet, and the food gets cold, and we all 
+	are hungry and tired. Why is Jesus so impractical?&quot;</p>
+	<p>Review what Jesus says to Martha: <em>&quot;You are worried about many things, 
+	but only one thing is needed.&quot;</em> One thing? Out of all the complexity of 
+	our lives we are to believe that only one thing is needed? What is this One, 
+	this Singleness, that is all we need? We must conclude, as we noted yesterday, 
+	that the One Thing we need is simply the Lord. So again, how does the work get 
+	done?</p>
+	<p>&quot;The work&quot; disappears. Perhaps Martha muttered, or someone else in the house 
+	muttered, as Jesus commended Mary. Sit at His feet a moment, though. What is 
+	food compared to this moment, this teaching, this authority, this love, this 
+	peace, this wholeness that just radiates from His being? What are the preparations 
+	in comparison? Why, they are nothing - if they must still be done they become 
+	only a fleeting moment, a joyful, brief outworking of what we have been hearing. 
+	&quot;Love my neighbor? Why yes, I will, in the simple, wonderful act of laying out 
+	this table that they may be refreshed. Care for the needy? Why, there are needy 
+	right here in my household. No, Mary, please - you relax and let me take care 
+	of this.&quot;</p>
+	<p>What has happened? The burden of the work has been lifted, to be replaced 
+	by true work: work that is a reflection of our time spent at Jesus&#39; feet, work 
+	that shines and radiates with love and joy and the best we have to offer because 
+	it is suddenly in perspective and focus. Our communion with Jesus and with our 
+	heavenly Father so changes our perspective and our attitude that what we previously 
+	thought of as &quot;work,&quot; we now pursue naturally because it has become a consequence 
+	of our being. We become loving, thoughtful, kind, peaceful, whole men and women; 
+	and in becoming so, we begin to act accordingly. When we sit at Jesus&#39; feet, 
+	when we commune moment by moment with the Father, then our lives will reflect 
+	His glory, then people <span style="text-decoration: underline">will</span> 
+	reflect His glory, then people <span style="text-decoration: underline">will</span> 
+	be attracted to the Father because of what they see in us, and then our witness 
+	will be genuine indeed.</p>
+	<br />
+	<p>&quot;Lord, as my life proceeds today, Help me to ever see, That in all that I 
+	must do and say, I have need of only Thee. Amen.&quot;</p>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+	12</span></p>
+	<hr style="clear: both" /><br />
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+	<span class="right">Week 17</span></p>
+	<p><em>AFFIRMATION FOR THE DAY:</em> The same God who saved me can 
+	live through me moment by moment and make me effective in all my roles in life.</p>
+	<center>- Erik Ritschard -</center>
+	<p>NOTES:</p>
+	<textarea rows="20" cols="60">Type Text Here, Copy &#38; Paste to Your file. (Word, Wordpad, Notepad)</textarea>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+	13</span></p>
+	<hr style="clear: both" /><br />
+	<a id="fourteen"></a>
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+	<span class="right">Week 17</span></p>
+	<p>Luke 19:38-42; Psalms 62:1-8</p>
+	<h3>Sitting Often At Jesus&#39; Feet</h3>
+	<p>Someone may conclude, after yesterday&#39;s reading, that what has been said 
+	is all well and good, but that it is too simplistic, too idealistic, too unrealistic. 
+	After all, we live in a world of pain and sorrow, and suffering, and death. 
+	Do you tell the single young mother, struggling with life, &quot;You need only sit 
+	at Jesus&#39; feet?&quot; Do you speak such words to the grieving widow who has just 
+	lost her husband? To the homeless man on the street? No.</p>
+	<p>Those words are for ourselves, and will be difficult enough at times. When 
+	the inevitable difficulties and tragedies of life crowd in, we will find it 
+	very challenging indeed to &quot;let go&quot; and &quot;sit&quot; at Jesus&#39; feet. Yet this is exactly 
+	where faith enters in. What does Jesus say? &quot;Only one thing is needed.&quot; Do we 
+	believe Him? When we are really busy, really hurting, really exhausted, really 
+	at our wit&#39;s end, do we believe Him? Do we trust Him? Will He help us?</p>
+	<p>The others around us we care for and love in very practical ways as a reflection 
+	of our being in Christ. Because we have been sitting at His feet, we find shelter 
+	for the homeless, comfort the grieving with out time and other resources, provide 
+	help for the helpless. For ourselves, we go back to Jesus. We sit at His feet 
+	again. We listen, and pour out our hears, and sometimes we weep. We take to 
+	Him all that is too big for us, and all that confuses, and all that distracts. 
+	The others we can lead to Jesus as they are ready and as He calls them. We must 
+	already be in His presence, being renewed daily, being filled, being again made 
+	whole in the midst of so much fragmentation.</p>
+	<p>Is your life filled with challenge now, with change, perhaps with grief? 
+	Is there suffering, or anger, or fear? Are you weary with &quot;being a Christian,&quot; 
+	tired of life&#39;s injustices, ready to give up? &quot;You are worried and upset about 
+	many things, but only one thing is needed.&quot; This is not idealism, this is how 
+	God has chosen to do genuine work among men. Come, sit at his feet in faith. 
+	Be renewed; be healed in spirit and soul. The circumstances around you may not 
+	change, but you will change, and then your life and lives of others can change 
+	as well. Will you believe the Lord? Come, let Him take your burden, come sit 
+	at His feet. <em>&quot;My soul finds rest in God alone...&quot;</em> (Psalms 62:1 , NIV)
+	</p>
+	<br />
+	<p>&quot;Lord, it is tempting to disbelieve, but I need and want you. Please take 
+	me into your arms just now. I turn again from trying to live by my own strength 
+	and my own will, and surrender it all again to you. Teach me how to be at your 
+	feet even as the moments of each day pass. Take this situation that is consuming 
+	me, and change me so that I may work out your will in the midst of this circumstance. 
+	Change me, Lord, change me. I want to be a true reflection of your glory, a 
+	real witness in the world. I want to see your power in my life. I want to be 
+	so filled with you that my life cannot help but be a witness</p>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+	14</span></p>
+	<hr style="clear: both" /><br />
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+	<span class="right">Week 17</span></p>
+	<p><em>AFFIRMATION FOR THE DAY:</em> In the midst of the challenges 
+	of my day, I will remember who God is and what He has promised.</p>
+	<center>- Erik Ritschard -</center>
+	<p>NOTES:</p>
+	<textarea rows="20" cols="60">Type Text Here, Copy &#38; Paste to Your file. (Word, Wordpad, Notepad)</textarea>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+	15</span></p>
+	<hr style="clear: both" /><br />
+	<a id="sixteen"></a>
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+	<span class="right">Week 17</span></p>
+	<p>Proverbs 23:7; Philippians 4:8</p>
+	<h3>Think!</h3>
+	<p>First of all, draw seven perpendicular - parallel - equal lines. Next, add 
+	five lines to these, and when properly placed you have printed the word &quot;THINK&quot;. 
+	You have no doubt been interrupted in conversation after using the word THINK, 
+	by a friend jovially saying, &quot;That&#39;s a new experience, isn&#39;t it?&quot; The remark 
+	- &quot;His mouth is in gear but his mind isn&#39;t&quot; is too often true.</p>
+	<p>The thought life is an integral part of us, this being verified both from 
+	personal experience and the Word of God. Proverbs (23:7) says that <em>&quot;as he 
+	thinketh in his heart, so is he.&quot;</em> What we are outwardly is a result or 
+	what we are inwardly.</p>
+	<p>Conveniences are ever present to assist us in thinking. The paperbacks on 
+	book stands lend themselves to &quot;filth for thought,&quot; and the civil laws are the 
+	only prohibitive barriers corralling the thought from breaking forth into actions. 
+	Packaged diversion of all kinds beckon the individual to become a glutton on 
+	the garbage offered to the mind. Thousands of people live mentally in the gutter 
+	of life, though outwardly respectable.</p>
+	<p>Paul realized the value of the controlled thought life when he wrote: &quot;Fill 
+	your minds with those things that are good and deserve praise: things that are 
+	true, noble, right, pure, lovely, and honorable&quot; (Philippians 4:8, Living Bible) 
+	The sky is the limit and there are no fences here. Correct thinking is an old 
+	sound principle affording inner health. Carroll Simcox said: &quot;The soul is dyed 
+	in the color of that which it habitually contemplates.&quot;</p>
+	<p>The following true account reveals the importance of developing a heart and 
+	mind that thinks upon things that edify. &quot;When
+	<a href="http://en.wikipedia.org/wiki/Hanns_Lilje">Hanns Lilje</a>, the courageous 
+	German Evangelical pastor, was imprisoned by the Nazi, he kept not only his 
+	faith but his sanity alive by use of his inscape (defined as what you see with 
+	that inward eye which is the bliss of solitude.) In his book of witness,
+	<span style="text-decoration: underline">The Valley of the Shadow</span>, he 
+	relates:</p>
+	<p style="margin-left: 50px; text-align: justify">I made a strictly ordered 
+	rule-of-life for each day, which included regular meditation and prolonged periods 
+	of prayer, followed by periods of thought on theological and ecclesiastical 
+	questions. The result of these reflections helps me in my work today. Since 
+	I had no paper to write down the result of my thinking I not only repeated it 
+	over and over again, in order to impress it upon my memory, but I frequently 
+	translated my thoughts into English, or French, or even into Latin, and this, 
+	in itself, did my memory a great deal of good. Under these circumstances, I 
+	could only repeat passages from the Bible, and verses from the hymn book, which 
+	I had retained in my memory. How grateful I am to all my teachers who had made 
+	me learn by heart hymns and</p>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+	16</span></p>
+	<hr style="clear: both" /><br />
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+	<span class="right">Week 17</span></p>
+	<p style="margin-left: 50px; text-align: justify">poems, Greek -lyrics, Latin 
+	odes, or Hebrew psalms! They provided me with a treasure which in those hard 
+	days was literally priceless.&quot;</p>
+	<p>Think! Fill the mind with good things.</p>
+	<br />
+	<p>&quot;Dear Lord, you give to us so many helps to enable the mind and heart to 
+	muse upon: the Bible, good books, music, nature. Thank you! Amen!&quot;</p>
+	<p><em>AFFIRMATION FOR THE DAY:</em> In the midst of things-that direct 
+	our attention to things less valuable, I will think on noble things for spiritual 
+	edification.</p>
+	<center>- Floyd Cooper -</center>
+	<p>NOTES:</p>
+	<textarea rows="20" cols="60">Type Text Here, Copy &#38; Paste to Your file. (Word, Wordpad, Notepad)</textarea>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+	17</span></p>
+	<hr style="clear: both" /><br />
+	<a id="eighteen"></a>
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+	<span class="right">Week 17</span></p>
+	<p>Psalms 118:22-29</p>
+	<h3>The Power And Glory Of Praise And Worship</h3>
+	<p>Driving in the thick of early morning rush hour traffic is an incredible 
+	experience. Most drivers use it as a time to wake up. Some put on their make-up 
+	while others talk on their cellular phones. I found myself doing something quite 
+	unique and wonderful during my rush hour drive. I spent that time worshiping 
+	my God.</p>
+	<p>This experience is only different because normally I would spend that time 
+	in prayer for myself - what I need to do that day or some other personal concern. 
+	But this week I turned my focus on Jesus and simply, yet beautifully, started 
+	to praise His name. I spoke scriptures which I could remember and sang choruses 
+	and old hymns. For half an hour each day I was caught up in the wonder and majesty 
+	of my God.</p>
+	<p>What was significantly different about my week is that I could tell that 
+	God was always going before me. When I would spend time offering Him my personal 
+	worship, the opportunities of the day were opened wide. Those opportunities 
+	may have presented themselves any way, but I was acutely more aware of His presence. 
+	I had a confidence and a peace about me.</p>
+	<p>At one point, driving in a neighborhood which was unfamiliar to me, I was 
+	praising God in song and prayer while searching for an address where I had an 
+	appointment, After missing the turn I wanted to take, I turned on the next street, 
+	only to find the building right on that corner. Now, the building was always 
+	there - God didn&#39;t move it to accommodate my prayer, but he nudged me to drive 
+	one block further to find my destination. That was how my week proceeded because 
+	I continued to worship God each day.</p>
+	<p>God inhabits the praise of His people. In other words, when we worship Him, 
+	He will be there with us. By relinquishing my usual pattern of praying for myself 
+	and turning my full attention on my most awesome God, I found Him always close, 
+	leading me without having to ask it of Him.</p>
+	<p>If you want to be close to God, praise Him. Forget yourself and recognize 
+	you are in the presence of the great &quot;I AM!&quot; Not only will God be with you, 
+	but He will go ahead of you. There is nothing more exciting than knowing God 
+	is already at your next appointment.</p>
+	<br />
+	<p>&quot;O God, I know there is no magic formula by which I will receive Your blessing. 
+	No phrase... no word... no incantation will cause You to turn Your ears to me. 
+	Nonetheless, I will worship and praise You all the days of my life, for You 
+	alone are God and are deserving of my worship. I praise Your name! To the glory 
+	of my Lord Jesus. Amen.&quot;</p>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+	18</span></p>
+	<hr style="clear: both" /><br />
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+	<span class="right">Week 17</span></p>
+	<p><em>AFFIRMATION FOR THE DAY:</em> God does not want me to pretend 
+	to worship Him. He wants me to worship Him in spirit and in truth. Because the 
+	Lord is with me, I will praise Him.</p>
+	<center>- Thomas Duckworth -</center>
+	<p>NOTES:</p>
+	<textarea rows="20" cols="60">Type Text Here, Copy &#38; Paste to Your file. (Word, Wordpad, Notepad)</textarea>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+	19</span></p>
+	<hr style="clear: both" /><br />
+	<a id="twenty"></a>
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+	<span class="right">Week 17</span></p>
+	<p>Romans 12:11</p>
+	<h3>Maintain The Spiritual Glow</h3>
+	<p>Home from the hospital, the little guy cried much of the night. Walking the 
+	floor and offering warm milk were to no avail. Exhausted, my wife called our 
+	neighbor, a nurse, who came, added a blanket or two and he slept peacefully 
+	into the morning. He needed extra physical warmth which was not found earlier.</p>
+	<p>Olin Curtis in &#39;The Christian Faith&#39;, writing of the Christian exertion (activity) 
+	of the Holy Spirit, says: &quot;1) The Holy Spirit does something for every man; 
+	2) but He will do more for the moral person who, in anytime, or in any place, 
+	makes his best personal response to the initiative moral pressure; 3) and He 
+	will do still more for men in any situation where the Christian message is declared; 
+	4) and He will do still more for men when the Christian message is declared 
+	in a situation which is quick with the faith and love and sacrifice belonging 
+	to actual Christian experience.&quot;</p>
+	<p>A definition of terms and reading through this statement will enable one 
+	to more fully comprehend what Curtis is saying. But, it is the fourth point 
+	now which is worth our consideration. And I want to place that statement in 
+	the context of the worship, and prayer, and Bible study services of the church.</p>
+	<p>The fourth statement above is involved with an atmosphere. &quot;...and He (the 
+	Holy Spirit) will do still more for men when the Christian message is declared 
+	in a situation which is quick with the faith and love and sacrifice belonging 
+	to actual Christian experience.&quot; Is he not saying that the Christian in that 
+	situation is really alive when there is faith, love, and a sense of God&#39;s presence 
+	in his life?</p>
+	<p>A warm spiritual atmosphere prepared by our cooperation with the Holy Spirit, 
+	is essential. Consequently, the sinner will be convinced of his or her sin, 
+	or drawn to the Savior because of the atmosphere of God&#39;s presence. Consequently, 
+	the Christian at such a service will leave with strength and courage, ready 
+	to face problems which may be present. Depending on the individual&#39;s state, 
+	hope, love, positiveness, faith, etc., will be realized.</p>
+	<p>Lukewarmness in the heart will lower the &#39;temperature&#39; in a service. With 
+	the heart&#39;s hearth ablaze with devotion to God, the &#39;temperature; rises. Paul 
+	exhorts us in Romans 12: 11 - &quot;Be aglow with the Spirit.&quot; The same scripture 
+	paraphrased by others says: &quot;Maintain the spiritual glow&quot; (Moffatt). &quot;Be aglow 
+	and burning with the Spirit&quot; (ANT). &quot;Keep the fire of the Spirit burning&quot; (JBP).</p>
+	<p>The words of a recent song of affirmation fits well here -</p>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+	20</span></p>
+	<hr style="clear: both" /><br />
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+	<span class="right">Week 17</span></p>
+	<pre>There&#39;s a sweet, sweet spirit in this place, 
+And I know that it&#39;s the Spirit of the Lord. </pre>
+	<p>When I speak of a warm spiritual atmosphere in a church service, you understand 
+	what I say, don&#39;t you? The atmosphere of love and grace and God&#39;s presence will 
+	fragrantize the places of worship, bringing healing, hope, courage, joy and 
+	uplift to those in attendance.</p>
+	<br />
+	<p>&quot;O Lord, we covet the Holy Spirit to be present in every church service in 
+	order to minister to people in their needs.&quot;</p>
+	<p><em>AFFIRMATION FOR THE DAY:</em> As I open the curtains of this 
+	day, I will keep the fires of the Spirit burning upon my heart&#39;s altar in order 
+	to bless others.</p>
+	<center>- Floyd Cooper -</center>
+	<p>NOTES:</p>
+	<textarea rows="20" cols="60">Type Text Here, Copy &#38; Paste to Your file. (Word, Wordpad, Notepad)</textarea>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+	21</span></p>
+	<hr style="clear: both" /><br />
+	<a id="twenty-two"></a>
+	<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+	<span class="right">Week 17</span></p>
+	<h3>Discussion Questions</h3>
+	<ol>
+		<li>
+		<p>What does it say to those around us if our lives as Christians are like 
+		unbelievers&#39; lives (i.e., like those who go down to the &#39;pit&#39; - Psalms 143:7-8)?</p>
+		</li>
+		<li>
+		<p>Why is evidence for the grace and power of God so often lacking in the 
+		lives of those who claim to be Christians? If we (as believers) do not closely 
+		follow Christ (and consistently demonstrate the love and compassion of Christ 
+		in our lives), can we expect unbelievers to take the claims of Christ seriously? 
+		Why or why not? What makes you different from those around you who do not 
+		know God?</p>
+		</li>
+		<li>
+		<p>Share ways in which following Christ should seriously make a difference 
+		in:</p>
+		<ol style="list-style: lower-alpha">
+			<li>
+			<p>The way you spend your money.</p>
+			</li>
+			<li>
+			<p>The way you spend your time.</p>
+			</li>
+			<li>
+			<p>The way you treat your spouse.</p>
+			</li>
+			<li>
+			<p>The way you love and discipline your children.</p>
+			</li>
+			<li>
+			<p>The way you use your leisure time.</p>
+			</li>
+		</ol>
+		</li>
+		<li>
+		<p>Give your personal response (or reaction) to the following statement: 
+		&quot;Perhaps, as painful as it is, the listener (i.e., the unbeliever to whom 
+		we are witnessing) is simply rejecting us, because our lives do not demonstrate 
+		that we have an answer that is real&quot;</p>
+		</li>
+		<li>
+		<p>What is it that most challenges nonbelievers to seriously consider the 
+		claims of Christ, and that most attracts nonbelievers to the beautiful person 
+		of Christ? (Note Colossians 1:27)</p>
+		</li>
+		<li>
+		<p>In terms of &#39;character&#39; and &#39;motivations&#39;, how can you tell the difference 
+		between a morally-oriented and highly-disciplined and humanitarian-minded 
+		non-believer who accomplishes &quot;great things&quot; through his serious discipline 
+		and hard work, and a highly disciplined Christian who seeks seriously to 
+		commune with God and to fill his life with &quot;good works&quot;?</p>
+		</li>
+		<li>
+		<p>Tell why you agree or disagree with the following statement: &quot;It is not 
+		the things we &#39;Do&#39; which will attract others to the Lord. It is who we &#39;Are&#39;.&quot;</p>
+		</li>
+		<li>
+		<p>Regardless of how many &quot;great things&quot; a nonbeliever does in the world, 
+		is it possible for such a person to be deeply and inwardly content, and 
+		at peace with himself, and genuinely &#39;whole&#39;, without his experiencing a 
+		personal conversion to God?</p>
+		</li>
+		<li>
+		<p>Which should come First - &#39;Being&#39; in Christ, or &#39;Doing&#39; for&#39; Christ? 
+		Why?</p>
+		<p><a class="top" href="#top" title="Back to Top">
+		<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group"/>Back To Top</a><span class="right">Page 
+		22</span></p>
+		<hr style="clear: both" /><br />
+		<p><span class="left">&quot;Growing A Godly Life&quot; - Devotional Series</span>
+		<span class="right">Week 17</span></p>
+		</li>
+		<li>
+		<p>Out of the complexity of our lives (as believers), with our multitude 
+		of activities and plans and relationships, what is the one indispensable 
+		thing that is needed in our lives?</p>
+		</li>
+		<li>
+		<p>Tell if you believe it is Biblically accurate to declare the following: 
+		&quot;Christian Service in the world is simply. the overflow of deep love for 
+		God which is discovered and cultivated in the quiet and intimacy of personal 
+		communion with Almighty God. Our communion with Jesus and with our heavenly 
+		Father so changes our perspective and our attitude that what we previously 
+		thought of as &#39;work&#39;, we now pursue naturally because it has become a consequence 
+		of our Being. Because we have been sitting at His feet, we find shelter 
+		for the homeless, comfort the grieving with our time and other resources, 
+		provide help for the helpless.&quot;</p>
+		</li>
+		<li>
+		<p>Tell to what extent you agree (or disagree) with the following statement: 
+		&quot;What we are outwardly is a result of what we are inwardly.&quot; (Note Proverbs 
+		23:7)</p>
+		</li>
+		<li>
+		<p>Give your personal explanation and illustration of the following statement: 
+		&quot;The soul is dyed in the color of that which it habitually contemplates.&quot;</p>
+		</li>
+		<li>
+		<p>Why is it so important for a Christian to fill his mind with &quot;good thoughts&quot;, 
+		through memorization of Holy Scripture and through meditation on edifying 
+		thoughts in inspirational books?</p>
+		</li>
+		<li>
+		<p>Do you make it a practice to spend at least a short time each day in 
+		offering personal worship and praise to your God, simply &quot;bathing&quot; in His 
+		presence and love? If so, when and where and how? What has been the result, 
+		in terms of spiritual and practical benefits, to yourself! Tell what the 
+		following statement means to you: &quot;God inhabits the praise of His people.&quot;</p>
+		</li>
+		<li>
+		<p>From your own personal life, share a time when you found the following 
+		to be &quot;very true&quot;: &quot;If you want to be close to God, praise Him. Forget yourself 
+		and recognize you are in the presence of the great &#39;I Am&#39;!&quot;</p>
+		</li>
+		<li>
+		<p>As a believer, what can you personally do (in terms of disciplined responses) 
+		to help &quot;keep the fires of the Spirit burning&quot; on the altar of your heart, 
+		in order that your life may bless and encourage others (both fellow Christians 
+		and non- believers)? (Note Romans 12:11) As an earnest Christian, do you 
+		have a &quot;wholesome fear&quot; that you may &quot;quench&quot; or &quot;grieve&quot; or &quot;embarrass&quot; 
+		the blessed Holy Spirit who indwells your life? (Note Ephesians 4:30) How 
+		would such a &quot;wholesome fear&quot; be a deterrent to your yielding to temptation?</p>
+		</li>
+	</ol>
+	<p><a class="top" href="#top" title="Back to Top">
+	<img class="icon" src="images/arrow-up.jpg" alt="Web Design Group" />Back 
+	To Top</a><span class="right">Page 23</span></p>
+	<hr style="clear: both" /><br />
+	<script src="js/fancy-tables.js" type="text/javascript"></script>
+
+  
+   <!-- ************************************************************* End Devotional ******************************************************************************* -->
+<div class="footer">
+		<hr />
+		<ul>
+			<li>
+			<p><a href="about.html">About</a></p>
+			</li>
+			<li>
+			<p><a href="http://mustardseed7.info">&quot;Our Day&quot; by William Spicer</a></p>
+			</li>
+		</ul>
+		<hr /></div>
+	<p></p>
+
+  <!-- menues -->
+  
+ <!-- Menu 2 start -->
+<div id="menu_2" class="mbmenu">
+	<a rel="title" class="{action: 'showMessage(\'menu_2.1\')', img: 'icon_13.png'}">Practicing The Presence Of God</a>
+<a href="introduction-practicing_the_presence_of_god.html" class="{img: 'buttonfind.gif'}" target="_self">Introduction</a>
+	<a href="contemplate_his_majestic_personhood.html" class="{img: 'buttonfind.gif'}" target="_self">Contemplate His Majestic 
+	Personhood</a> <a href="appreciate_his_constant_presence.html" class="{img: 'buttonfind.gif'}" target="_self">Appreciate His 
+	Constant Presence</a> <a href="anticipate_his_compassionate.html" class="{img: 'buttonfind.gif'}" target="_self">Anticipate 
+	His Compassionate Intervention</a>
+	<a href="follow_his_careful_guidance.html" class="{img: 'buttonfind.gif'}" target="_self">Follow His Careful Guidance</a>
+	 </div>
+	<!-- Menu 2 end -->
+	
+	<!-- Menu 3 start -->
+<div id="menu_3" class="mbmenu">
+	<a href="appendix 1.html" class="{img: 'buttonfind.gif'}" target="_self">"Perseverance Of Believers"</a>
+	<a href="appendix 2.html" class="{img: 'buttonfind.gif'}" target="_self">Contributors</a>
+	<a href="included_books.html" class="{img: 'buttonfind.gif'}" target="_self">Books Referenced</a> </div>
+	
+	<!-- End Menu 3 -->
+	
+	<!-- Start Menu 4 -->
+<div id="menu_4" class="mbmenu">
+	<a href="sample_question_and-answer.html" class="{img: 'buttonfind.gif'}" target="_self">Sample Question and Answer</a>
+	<a href="http://www.biblegateway.com/" class="{img: 'buttonfind.gif'}" target="_blank">Bible Gateway</a> </div>
+	<!-- End Menu 4 -->
+
+<!-- end menus -->
+	
+
+</div>
+    <p style="position:absolute; left:30px; top:300px"><script type="text/javascript"><!--
+google_ad_client = "pub-3376941055410928";
+/* 160x600, created 8/20/10 */
+google_ad_slot = "0293969109";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script src="http://pagead2.googlesyndication.com/pagead/show_ads.js" type="text/javascript">
+
+</script>
+</p>
+
+</div>
+</div>
+</body>
+</html>
