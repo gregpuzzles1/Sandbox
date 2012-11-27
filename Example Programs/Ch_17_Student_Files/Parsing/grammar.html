@@ -1,0 +1,44 @@
+<HTML>
+
+<HEAD>
+
+<TITLE>Grammar for Arithmetic Expressions</TITLE>
+
+</HEAD>
+
+<BODY>
+
+<PRE>
+
+In the following grammar
+
+    =    means "is defined as"
+    " "  enclose literal items
+    [ ]  enclose items which may be omitted
+    { }  enclose items which may appear zero or more times
+    |    indicates a choice
+    ( )  are used for grouping required choices
+
+expression =  term { addingOperator term }
+
+term = factor { multiplyingOperator factor }
+
+factor = primary [ "**" primary ]
+
+primary = numericLiteral | "(" expression ")"
+
+addingOperator = "+" | "-"
+
+unaryAddingOperator = "+" | "-"
+
+multiplyingOperator = "*" | "/" | "%"
+
+numericLiteral = digit { digit }
+
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+</PRE>
+
+</BODY>
+
+</HTML>

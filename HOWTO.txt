@@ -1,0 +1,53 @@
+#######################################
+TAMOGEN: Tone Altering Mosaic Generator
+#######################################
+
+TAMOGEN is a program designed to either create a mosaic of one image out of another,
+or create a mosaic of one image out of itself. 
+
+The images used can be color or black and white.  At runtime, TAMOGEN will allow you to convert
+color images to a black and white mosaic if so desired.
+
+TAMOGEN will allow you to specify how many times the smaller image is repeated to create the
+larger mosaic.  It will do this by asking you how many columns, and how many rows you would like
+to have. If you specify 40 rows and 40 columns, the resulting mosaic will repeat the smaller 
+image 1600 times.  
+
+Bear in mind that this effectively is the resolution at which the larger image will be seen.
+
+10 columns and 10 rows will create an almost unrecognizable large image with easy to see small 
+images.  200 columns by 200 columns will create a very clear larger image, but the smaller images
+will be harder to see.
+
+TAMOGEN will also allow you to specify the resulting pixel resolution of the image.  The higher
+the final resolution, the larger the image will print and the clearer the smaller images will be
+when viewed at full size.  
+
+You can also find and edit the python source code in the file "tamogensrc.py". To do 
+
+#######################################
+
+To run TAMOGEN:
+
+1. Unzip the files in tamogen.zip to your computer. 
+
+2. Copy the image(s) you wish to use to the same directory as TAMOGEN.  
+
+3. Run the program by double-clicking "tamogen.exe"
+
+4. Answer the questions asked
+
+5. In the last question, you will be asked what the mosaic file name will be.
+The final picture file will be named: <name you specified>.final.png
+
+6. After running TAMOGEN, you will find an image named <something>.thumbnail.PNG - 
+you can delete that.
+
+
+**NOTE: THIS PROGRAM REQUIRES THAT YOU USE .PNG IMAGES FOR THE TIME BEING. A FUTURE UPDATE WILL
+SUPPORT ADDITIONAL FORMATS.
+
+#######################################
+
+You can also find and edit the python source code in the file "tamogensrc.py". To do so, you will need
+a working installation of Python on your machine and the Python Imaging Library (PIL) installed.
