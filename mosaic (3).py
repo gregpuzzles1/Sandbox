@@ -32,11 +32,11 @@ def compare(img, x):
 
 def compare_color(img):
     """Innactive Function"""    
-    dirname = 'C:\\Python27\\Sandbox\\photomosaic\\dali'
+    dirname = 'C:\\Users\\GREG\\Desktop\\Sandbox\\photomosaic\\dali'
     pictdb = os.listdir(dirname)
     counter = 0
     for i in pictdb:
-        x = os.path.join('C:\\Python27\\Sandbox\\photomosaic\\dali', i)
+        x = os.path.join('C:\\Users\\GREG\\Desktop\\Sandbox\\photomosaic\\dali', i)
         td = compare(img, x)
         counter += 1
         if counter == 1:
@@ -55,7 +55,7 @@ def resize_picture(resize_pic, resize_pic_width, resize_pic_height):
     return out
 
 def find_match(img, d):
-    dirname = 'C:\\Python27\\Sandbox\\photomosaic\\dali'
+    dirname = 'C:\\Users\\GREG\\Desktop\\Sandbox\\photomosaic\\dali'
     pictdb = os.listdir(dirname)
     color_value = img_getdata(img)
     closest_match = 1000000
@@ -134,7 +134,7 @@ def pictdb_getdata(pictdb, dirname):
         
 def create_mosaic(filename, min_size):
     """Creates the mosaic"""    
-    dirname = 'C:\\Python27\\Sandbox\\photomosaic\\dali'
+    dirname = 'C:\\Users\\GREG\\Desktop\\Sandbox\\photomosaic\\dali'
     pictdb = os.listdir(dirname)        
     counter = 0
     imc = Image.open(filename)
@@ -155,8 +155,8 @@ def create_mosaic(filename, min_size):
         im_height = qn[3] - qn[1]
         start_x = qn[0]
         start_y = qn[1]
-        a = start_x + im_width
-        b = start_y + im_height
+        #a = start_x + im_width
+        #b = start_y + im_height
         xy = quads(im_width, im_height, start_x, start_y)
         if (xy[0][2] - xy[0][0]) < min_size or (xy[0][3] - xy[0][1]) < min_size:
              for i in range(0, 4):
@@ -186,8 +186,8 @@ def save_as(im, outdir):
 def main():
     """Main Program"""    
     start_time = time.clock()
-    outdir = 'C:\\Python27\\Sandbox\\photomosaic\\'
-    filename = "C:\\Python27\Sandbox\photomosaic\karan.jpg"
+    outdir = 'C:\\Users\\GREG\\Desktop\\Sandbox\\photomosaic\\'
+    filename = "C:\\Users\GREG\Desktop\Sandbox\photomosaic\karan.jpg"
     min_size = 10
     im = create_mosaic(filename, min_size)
     save_as(im, outdir)
