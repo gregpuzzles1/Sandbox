@@ -44,7 +44,7 @@ for i in range(num_samples):
     audio_data.append(int(amplitude * modulated))
 
 # Write to WAV file using context manager
-output_filename = 'Random_SoundFX.wav'
+output_filename = 'RandomSoundFX.wav'
 with wave.open(output_filename, 'w') as wav_file:
     wav_file.setparams((num_channels, sample_width, sample_rate, num_samples, "NONE", "Uncompressed"))
     wav_file.writeframes(audio_data.tobytes())
