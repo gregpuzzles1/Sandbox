@@ -1,5 +1,0 @@
-include graphics/*.png
-include graphics/*.ico
-include sound/*.*
-include words/*.*
-include *.txt
