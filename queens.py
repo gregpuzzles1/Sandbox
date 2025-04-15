@@ -1,28 +1,42 @@
 BOARD_SIZE = 8
 
 class BailOut(Exception):
+    """Custom exception used to backtrack during invalid placements."""
     pass
 
 def validate(queens):
-    left = right = col = queens[-1]
-    for r in reversed(queens[:-1]):
-        left, right = left-1, right+1
-        if r in (left, col, right):
+    """
+    Validates that the last queen added does not conflict diagonally or vertically
+    with any of the previously placed queens.
+    """
+    col = queens[-1]
+    left = right = col
+    for row_queen in reversed(queens[:-1]):
+        left -= 1
+        right += 1
+        if row_queen in (left, col, right):
             raise BailOut
 
 def add_queen(queens):
-    for i in range(BOARD_SIZE):
-        test_queens = queens + [i]
+    """
+    Attempts to place a queen in the next row. If all queens are placed,
+    returns the list of columns for each row.
+    """
+    for column in range(BOARD_SIZE):
+        next_queens = queens + [column]
         try:
-            validate(test_queens)
-            if len(test_queens) == BOARD_SIZE:
-                return test_queens
+            validate(next_queens)
+            if len(next_queens) == BOARD_SIZE:
+                return next_queens
             else:
-                return add_queen(test_queens)
+                return add_queen(next_queens)
         except BailOut:
-            pass
+            continue
     raise BailOut
 
+# Solve the problem
 queens = add_queen([])
-print queens
-print "\n".join(". "*q + "Q " + ". "*(BOARD_SIZE-q-1) for q in queens)
+
+# Output the result
+print(queens)
+print("\n".join(". " * q + "Q " + ". " * (BOARD_SIZE - q - 1) for q in queens))
