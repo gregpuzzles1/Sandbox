@@ -1,28 +1,23 @@
-from Tkinter import Tk, Frame, BOTH
+import tkinter as tk
 
 
-class Example(Frame):
-  
+class Example(tk.Frame):
     def __init__(self, parent):
-        Frame.__init__(self, parent, background="orange")   
-         
+        super().__init__(parent, background="orange")
         self.parent = parent
-        
-        self.initUI()
-    
-    def initUI(self):
-      
+        self.init_ui()
+
+    def init_ui(self):
         self.parent.title("Simple")
-        self.pack(fill=BOTH, expand=1)
-        
+        self.pack(fill=tk.BOTH, expand=True)
+
 
 def main():
-  
-    root = Tk()
+    root = tk.Tk()
     root.geometry("250x150+300+300")
     app = Example(root)
-    root.mainloop()  
+    root.mainloop()
 
 
 if __name__ == '__main__':
-    main()  
+    main()

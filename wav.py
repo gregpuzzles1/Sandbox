@@ -1,22 +1,32 @@
-## {{{ http://code.activestate.com/recipes/578168/ (r1)
-# generate wav file containing sine waves
-# FB36 - 20120617
-import math, wave, array
-duration = 3 # seconds
-freq = 440 # of cycles per second (Hz) (frequency of the sine waves)
-volume = 100 # percent
-data = array.array('h') # signed short integer (-32768 to 32767) data
-sampleRate = 44100 # of samples per second (standard)
-numChan = 1 # of channels (1: mono, 2: stereo)
-dataSize = 2 # 2 bytes because of using signed short integers => bit depth = 16
-numSamplesPerCyc = int(sampleRate / freq)
-numSamples = sampleRate * duration
-for i in range(numSamples):
-    sample = 32767 * float(volume) / 100
-    sample *= math.sin(math.pi * 2 * (i % numSamplesPerCyc) / numSamplesPerCyc)
-    data.append(int(sample))
-f = wave.open('SineWave_' + str(freq) + 'Hz.wav', 'w')
-f.setparams((numChan, dataSize, sampleRate, numSamples, "NONE", "Uncompressed"))
-f.writeframes(data.tostring())
-f.close()
-## end of http://code.activestate.com/recipes/578168/ }}}
+import math
+import wave
+import array
+
+# Configuration
+duration = 3         # seconds
+frequency = 440      # Hz (frequency of the sine wave)
+volume = 100         # percent (0 to 100)
+sample_rate = 44100  # samples per second
+num_channels = 1     # mono
+bit_depth = 16       # 16-bit audio
+
+def generate_sine_wave(filename: str, duration: int, frequency: int, volume: int):
+    num_samples = sample_rate * duration
+    data = array.array('h')  # signed 16-bit integers
+
+    amplitude = int(32767 * volume / 100)
+    num_samples_per_cycle = sample_rate / frequency
+
+    for i in range(num_samples):
+        sample = amplitude * math.sin(2 * math.pi * (i % num_samples_per_cycle) / num_samples_per_cycle)
+        data.append(int(sample))
+
+    with wave.open(filename, 'w') as f:
+        f.setparams((num_channels, bit_depth // 8, sample_rate, num_samples, "NONE", "Uncompressed"))
+        f.writeframes(data.tobytes())
+
+    print(f"Sine wave file '{filename}' generated: {duration}s at {frequency}Hz, volume {volume}%.")
+
+# Run generator
+output_filename = f"SineWave_{frequency}Hz.wav"
+generate_sine_wave(output_filename, duration, frequency, volume)

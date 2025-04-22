@@ -1,36 +1,38 @@
-# File: htmllib-example-1.py
+from html.parser import HTMLParser
 
-import htmllib
-import formatter
-import string
-
-class Parser(htmllib.HTMLParser):
-    # return a dictionary mapping anchor texts to lists
-    # of associated hyperlinks
-
-    def __init__(self, verbose=0):
+class AnchorParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
         self.anchors = {}
-        f = formatter.NullFormatter()
-        htmllib.HTMLParser.__init__(self, f, verbose)
+        self.current_href = None
+        self.current_data = []
 
-    def anchor_bgn(self, href, name, type):
-        self.save_bgn()
-        self.anchor = p
+    def handle_starttag(self, tag, attrs):
+        if tag == 'a':
+            attrs_dict = dict(attrs)
+            self.current_href = attrs_dict.get('href')
+            self.current_data = []
 
-    def anchor_end(self):
-        text = string.strip(self.save_end())
-        if self.anchor and text:
-            self.anchors[text] = self.anchors.get(text, []) + [self.anchor]
+    def handle_data(self, data):
+        if self.current_href is not None:
+            self.current_data.append(data.strip())
 
-file = open("contemplate_his_majestic_personhood.html")
-html = file.read()
-file.close()
+    def handle_endtag(self, tag):
+        if tag == 'a' and self.current_href:
+            text = ' '.join(self.current_data).strip()
+            if text:
+                self.anchors.setdefault(text, []).append(self.current_href)
+            self.current_href = None
+            self.current_data = []
 
-p = Parser()
-p.feed(html)
-p.close()
+# Read the HTML content from file
+with open("contemplate_his_majestic_personhood.html", encoding='utf-8') as file:
+    html = file.read()
 
-for k, v in p.anchors.items():
-    print k, "=>", v
+# Parse the HTML content
+parser = AnchorParser()
+parser.feed(html)
 
-print
+# Print the extracted anchor text and associated links
+for text, hrefs in parser.anchors.items():
+    print(f"{text} => {hrefs}")

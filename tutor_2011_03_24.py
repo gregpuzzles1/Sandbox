@@ -1,13 +1,18 @@
-import urllib
+import urllib.request
 import csv
-url = r"http://www.cs.columbia.edu/~joshua/teaching/cs3101/simpsons_diet.csv"
-simpsons = urllib.urlopen(url)
-reader = csv.reader(simpsons, delimiter=',', quotechar='"')
+
+url = "http://www.cs.columbia.edu/~joshua/teaching/cs3101/simpsons_diet.csv"
 
 list_string = []
 
-for char, meal, ate, qty, com in reader:
-    if char != 'Character':
-        list_string.append("%s %s %s %s %s" % (char, meal, ate, qty, com))
+# Open the URL and read the CSV content
+with urllib.request.urlopen(url) as response:
+    lines = [line.decode('utf-8') for line in response.readlines()]
+    reader = csv.reader(lines, delimiter=',', quotechar='"')
 
-print list_string
+    for char, meal, ate, qty, com in reader:
+        if char != 'Character':  # Skip header row
+            list_string.append(f"{char} {meal} {ate} {qty} {com}")
+
+# Print the resulting list
+print(list_string)
