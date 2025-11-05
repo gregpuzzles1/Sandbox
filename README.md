@@ -1,4 +1,4 @@
 Sandbox
 =======
 
-Test files and experiments
+Python test files and experiments, with some HTML and DIGITAL Command Language examples.
