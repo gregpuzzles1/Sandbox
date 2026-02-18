@@ -1,375 +1,267 @@
-## {{{ http://code.activestate.com/recipes/578051/ (r1)
-# PREAMBLE
+"""
+Refactor of ActiveState recipe 578051 for Python 3.13.
 
+Original: http://code.activestate.com/recipes/578051/
+Creates a camo / Pollock-like fractal splatter using tkinter Canvas.
+"""
 
+from __future__ import annotations
 
-# My original intention was to create some
+import math
+import random
+import tkinter as tk
+from dataclasses import dataclass
+from typing import Callable, Dict, Tuple
 
-# disruptive visual camoflage, inspired by the pattern on
+# ----------------------------
+# Critical parameters (tweak!)
+# ----------------------------
 
-# the bark of plane trees. The result was never quite what I intended
+W = 800        # canvas width
+H = 500        # canvas height (rough golden-ish ratio)
+nLow = 25      # recursion limiter (tile size threshold)
 
-# and several fixes had to be incorperated to aproximate what I wanted.
-
-# The end result is effective though and reminds me of a Jackson Pollock
-
-# or a Monet painting.
-
-# I think that the program does quite a good job of producing an aesteticalty
-
-# pleasing picture, through a purely mathematical process,
-
-# though some considerable tweeking on the part of the programmer
-
-# was needed to achieve this.
-
-# In this version, I am able to show a wide variety of colour schemes.
-
-# Artists code their colours according to three dimensions, (hue, chorma and saturation)
-
-# This might be a more apropriate approach than (red, green, blue).
-
-
-
-# CODE
-
-
-
-from Tkinter import *
-
-from math import *
-
-from random import*
-
-
-
-# critical parameters, adjust to suit
-
-W = 800        # canvas dimensions
-
-H = 500        # golden ratio  
-
-nLow    = 25   # recursive limiter
-
-nCover  = 0.05  # Adjusts probability of a particular area being painted over per sweep
-
-nMSpan  = 10.0  # Same as above, These two parameters depend upon the number of recursions
-
-nCSpan  = 8.0  # Same for colour range
-
+nCover = 0.05  # probability threshold per sweep for painting
+nMSpan = 10.0  # span for "coverage" mapping (depends on recursion depth)
+nCSpan = 8.0   # span for colour range
 nSplatterSize = 0.25
 
-# scale factor per recursion. i.e. not scale invariant
+# scale factor per recursion (not scale-invariant)
+aScale = [
+    0.05, 0.1, 0.6, 0.9, 0.9, 0.3, 0.1, 0.1, 0.1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+]
 
-aScale  = [0.05, .1, .6, 0.9,0.9,0.3,0.1,0.1,0.1,0,0,0,0,0,0,0,0,0,0,0,0]
+# colour factor per recursion
+aColour = [0.5] * 13
 
-# colours 
+# Globals set in main()
+canvas: tk.Canvas
+nHorizFactor: float
+nDiagFactor: float
 
-aColour = [0.5,0.0,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]
-
-
-
-# The two functions VibrantHousePaint and DrawDrip
-
-# can be modified to suit 
-
-def VibrantHousePaint(oM, nR):
-
-    # colour scheme
-
-    rg  = oM.rg
-
-    rb  = oM.rb
-
-    gb  = oM.gb
-
-    cR = ColStr(int((ZeroToOne(oM.r + rg - rb - oM.rgb , nCSpan * nR)) * nMaxR) + nMinR) # red   
-
-    cG = ColStr(int((ZeroToOne(oM.g - rg + gb - oM.rgb , nCSpan * nR)) * nMaxG) + nMinG) # green 
-
-    cB = ColStr(int((ZeroToOne(oM.b + gb - rb - oM.rgb , nCSpan * nR)) * nMaxB) + nMinB) # blue              
-
-    return '#' + cR + cG + cB                         
+nMinR: int
+nMaxR: int
+nMinG: int
+nMaxG: int
+nMinB: int
+nMaxB: int
 
 
+# ----------------------------
+# Data model
+# ----------------------------
 
-def DrawDrip(nX, nY, oM, nR, bScheme):
-
-    colour = apply(bScheme, (oM, nR))
-
-    nL = (nLow + 0.0) * nR / 3
-
-    nX1 = dist(nX, nL * nSplatterSize)
-
-    nY1 = dist(nY, nL * nSplatterSize)
-
-    nL2 = dist(nL , nL)
-
-    canvas.create_oval( nX1, nY1, nX1 + nL2, nY1 + nL2, fill = colour, width = 0)
-
-    canvas.create_rectangle( nX1, nY1 , nX1 + nL2 / 2.0, nY1 + nL2 / 2.0, fill = colour, width = 0)
-
-    canvas.update()
+@dataclass(frozen=True)
+class Splat:
+    z: float
+    r: float
+    g: float
+    b: float
+    rg: float
+    rb: float
+    gb: float
+    rgb: float
 
 
+# ----------------------------
+# Utility functions
+# ----------------------------
 
-
-
-class splat:
-
-    def __init__(self,z,r,g,b,rg,rb,gb,rgb):
-
-        self.z   = z
-
-        self.r   = r
-
-        self.g   = g
-
-        self.b   = b
-
-        self.rg  = rg
-
-        self.rb  = rb
-
-        self.gb  = gb
-
-        self.rgb = rgb
-
-
-
-def ColStr( x):
-
+def col_str(x: int) -> str:
+    """Clamp/wrap-ish like the original: if out of bounds, flip to 0/255."""
     if x > 255:
-
         x = 0
-
     if x < 0:
-
         x = 255
+    s = f"{x:x}"  # hex without 0x
+    return s.zfill(2)
 
-    s = "%x" % x # converts x into a hexidecimal string
 
-    if len( s) < 2:
+def load(grid: Dict[str, Splat], x: int, y: int, value: Splat) -> Splat:
+    """If (x,y) exists, return stored, else store provided and return it."""
+    key = f"{x}_{y}"
+    if key in grid:
+        return grid[key]
+    grid[key] = value
+    return value
 
-        s = '0' + s
 
-    return s
+def zero_to_one(m: float, span: float) -> float:
+    """Map real line to [0,1]."""
+    return math.atan(m * span) / math.pi + 0.5
 
 
+def mid(n1: int, n2: int) -> int:
+    return int((n1 + n2) / 2)
 
-def Load(aGrid, nX, nY, n):
 
-    # changes value if not set, or else it returns the value
+def dist(p: float, scale: float) -> float:
+    return p + (random.random() - 0.5) * scale
 
-    cKey = str( nX) + '_' + str( nY)
 
-    if aGrid.has_key(cKey):
+def odist(points: list[Splat], s1: float, s2: float) -> Splat:
+    """Average a list of Splats then add random perturbations."""
+    z = r = g = b = rg = rb = gb = rgb = 0.0
+    for sp in points:
+        z += sp.z
+        r += sp.r
+        g += sp.g
+        b += sp.b
+        rg += sp.rg
+        rb += sp.rb
+        gb += sp.gb
+        rgb += sp.rgb
 
-       return aGrid[cKey]
+    l = float(len(points))
+    z = dist(z / l, s1)
+    r = dist(r / l, s2)
+    g = dist(g / l, s2)
+    b = dist(b / l, s2)
+    rg = dist(rg / l, s2)
+    rb = dist(rb / l, s2)
+    gb = dist(gb / l, s2)
+    rgb = dist(rgb / l, s2)
+
+    return Splat(z, r, g, b, rg, rb, gb, rgb)
 
-    aGrid[cKey] = n
 
-    return n
+def colour_range() -> Tuple[int, int]:
+    """Return (min, span)."""
+    n_min = int(random.random() * 255)
+    n_max = int(random.random() * 255)
+    if n_min > n_max:
+        n_min, n_max = n_max, n_min
+    return n_min, (n_max - n_min)
 
 
+# ----------------------------
+# Painting / scheme
+# ----------------------------
 
+ColourScheme = Callable[[Splat, float], str]
 
 
-def ZeroToOne(nM, nSpan):
+def vibrant_house_paint(m: Splat, r_scale: float) -> str:
+    """Original colour scheme port (RGB derived from coupled channels)."""
+    rg = m.rg
+    rb = m.rb
+    gb = m.gb
 
-    # maps the Real domain onto [0 , 1]
+    # note: nMax* variables are "span", so add min like original
+    c_r = col_str(int((zero_to_one(m.r + rg - rb - m.rgb, nCSpan * r_scale)) * nMaxR) + nMinR)
+    c_g = col_str(int((zero_to_one(m.g - rg + gb - m.rgb, nCSpan * r_scale)) * nMaxG) + nMinG)
+    c_b = col_str(int((zero_to_one(m.b + gb - rb - m.rgb, nCSpan * r_scale)) * nMaxB) + nMinB)
 
-    return atan(nM * nSpan) / pi + 0.5 
+    return f"#{c_r}{c_g}{c_b}"
 
-    
 
-def mid(n1, n2):
+def draw_drip(x: int, y: int, m: Splat, r_scale: float, scheme: ColourScheme) -> None:
+    colour = scheme(m, r_scale)
 
-    return int((n1 + n2) / 2) 
+    # similar sizing behavior
+    n_l = (nLow + 0.0) * r_scale / 3.0
+    x1 = dist(x, n_l * nSplatterSize)
+    y1 = dist(y, n_l * nSplatterSize)
+    l2 = dist(n_l, n_l)
 
+    canvas.create_oval(x1, y1, x1 + l2, y1 + l2, fill=colour, width=0)
+    canvas.create_rectangle(x1, y1, x1 + l2 / 2.0, y1 + l2 / 2.0, fill=colour, width=0)
+    canvas.update_idletasks()
 
 
-def dist(nP, nScale):
+# ----------------------------
+# Fractal recursion
+# ----------------------------
 
-    return nP + (random() - 0.5) * nScale
+def frac_down(
+    grid: Dict[str, Splat],
+    x1: int, y1: int, x2: int, y2: int,
+    tl: Splat, tr: Splat, bl: Splat, br: Splat,
+    lim: float,
+    rec: int,
+    scheme: ColourScheme,
+) -> None:
+    dx = x2 - x1
+    dy = y2 - y1
 
+    # guard if recursion index exceeds arrays
+    idx = rec if rec < len(aScale) else (len(aScale) - 1)
+    idxc = rec if rec < len(aColour) else (len(aColour) - 1)
 
+    s = aScale[idx]
+    sc = aColour[idxc]
 
-def odist(A, nS1, nS2):
+    t = odist([tl, tr], s * nHorizFactor, sc)
+    l = odist([tl, bl], s, sc)
+    r = odist([tr, br], s, sc)
+    b = odist([bl, br], s * nHorizFactor, sc)
+    m = odist([tl, tr, bl, br], s * nDiagFactor, sc)
 
-    z = 0
+    xm = mid(x1, x2)
+    ym = mid(y1, y2)
 
-    r = 0
+    tl = load(grid, x1, y2, tl)
+    tr = load(grid, x2, y2, tr)
+    bl = load(grid, x1, y1, bl)
+    br = load(grid, x2, y1, br)
 
-    g = 0
+    if dx <= nLow and dy <= nLow:
+        # keep the same "paint if" idea
+        if zero_to_one(m.z, nMSpan * math.sqrt(rec)) > lim:
+            draw_drip(xm, ym, m, math.sqrt(rec), scheme)
+        return
 
-    b = 0
+    tasks = [
+        (grid, x1, ym, xm, y2, tl, t,  l,  m,  lim, rec + 1, scheme),
+        (grid, xm, ym, x2, y2, t,  tr, m,  r,  lim, rec + 1, scheme),
+        (grid, x1, y1, xm, ym, l,  m,  bl, b,  lim, rec + 1, scheme),
+        (grid, xm, y1, x2, ym, m,  r,  b,  br, lim, rec + 1, scheme),
+    ]
+    random.shuffle(tasks)
 
-    h = 0
+    for args in tasks:
+        frac_down(*args)
 
-    v = 0
 
-    rg = 0
+def frac(lim: float, scheme: ColourScheme) -> None:
+    grid: Dict[str, Splat] = {}
 
-    rb = 0
+    z0 = Splat(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    frac_down(grid, 0, 0, W - 1, H - 1, z0, z0, z0, z0, lim, 1, scheme)
 
-    gb = 0
 
-    rgb = 0
+# ----------------------------
+# Main
+# ----------------------------
 
-    for i in A:
+def main() -> None:
+    global canvas, nHorizFactor, nDiagFactor
+    global nMinR, nMaxR, nMinG, nMaxG, nMinB, nMaxB
 
-        z += i.z
+    random.seed()
 
-        r += i.r
+    root = tk.Tk()
+    root.title("Fractal Splatter (Python 3.13)")
 
-        g += i.g
+    canvas = tk.Canvas(root, width=W, height=H)
+    canvas.pack(side=tk.TOP)
 
-        b += i.b
+    canvas.create_rectangle(0, 0, W, H, fill="gray", width=0)
 
-        rg += i.rg
+    nHorizFactor = (W + 0.0) / (H + 0.0)
+    nDiagFactor = math.sqrt(H**2 + W**2) / (H + 0.0)
 
-        rb += i.rb
+    nMinR, nMaxR = colour_range()
+    nMinG, nMaxG = colour_range()
+    nMinB, nMaxB = colour_range()
 
-        gb += i.gb
+    frac(nCover, vibrant_house_paint)
 
-        rgb += i.rgb
+    print("done")
 
-    l = len(A)
+    root.mainloop()
 
-    z = dist(z / l, nS1)
 
-    r = dist(r / l, nS2)
-
-    g = dist(g / l, nS2)
-
-    b = dist(b / l, nS2)
-
-    rg = dist(rg / l, nS2)
-
-    rb = dist(rb / l, nS2)
-
-    gb = dist(gb / l, nS2)
-
-    rgb = dist(rgb / l, nS2)
-
-    return splat(z, r, g, b, rg, rb, gb, rgb)
-
-
-
-def FracDown(aGrid, nX1, nY1, nX2, nY2, oTL, oTR, oBL, oBR, nLim, nRecursive, bScheme):          
-
-    # fractal lanscape grenerator
-
-    dx  = nX2 - nX1
-
-    dy  = nY2 - nY1
-
-    nS  = aScale[nRecursive]
-
-    nSC = aColour[nRecursive]
-
-    oT  = odist([oTL, oTR], nS * nHorizFactor, nSC)
-
-    oL  = odist([oTL, oBL], nS, nSC)
-
-    oR  = odist([oTR, oBR], nS, nSC)
-
-    oB  = odist([oBL, oBR], nS * nHorizFactor, nSC)
-
-    oM  = odist([oTL, oTR, oBL, oBR], nS * nDiagFactor, nSC)
-
-    nXm = mid(nX1, nX2)
-
-    nYm = mid(nY1, nY2)
-
-    oTL = Load(aGrid, nX1, nY2, oTL)
-
-    oTR = Load(aGrid, nX2, nY2, oTR)
-
-    oBL = Load(aGrid, nX1, nY1, oBL)
-
-    oBR = Load(aGrid, nX1, nY1, oBR)
-
-
-
-    if dx <= nLow and dy <= nLow: 
-
-       if ZeroToOne(oM.z, nMSpan * sqrt(nRecursive)) > nLim:
-
-           DrawDrip(nXm, nYm, oM, sqrt(nRecursive), bScheme)
-
-       return
-
-    t1  = (aGrid, nX1, nYm, nXm, nY2, oTL, oT,  oL,  oM,  nLim, nRecursive + 1, bScheme)          
-
-    t2  = (aGrid, nXm, nYm, nX2, nY2, oT,  oTR, oM,  oR,  nLim, nRecursive + 1, bScheme)          
-
-    t3  = (aGrid, nX1, nY1, nXm, nYm, oL,  oM,  oBL, oB,  nLim, nRecursive + 1, bScheme)          
-
-    t4  = (aGrid, nXm, nY1, nX2, nYm, oM,  oR,  oB,  oBR, nLim, nRecursive + 1, bScheme)          
-
-    aT  = [t1,t2,t3,t4]
-
-    shuffle(aT)
-
-    for i in aT:
-
-        apply(FracDown, i)
-
-
-
-
-
-def ColourRange():
-
-    nMin = int(random() * 255)
-
-    nMax = int(random() * 255)
-
-    if nMin > nMax:
-
-       nMin, nMax = nMax, nMin
-
-    return nMin, nMax - nMin
-
-
-
-def Frac(nLim, bScheme):
-
-    aGrid = {}
-
-    s1 = splat(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)
-
-    s2 = splat(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)
-
-    s3 = splat(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)
-
-    s4 = splat(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)
-
-    FracDown(aGrid, 0, 0, W - 1, H - 1, s1, s2, s3, s4,nLim, 1, bScheme)          
-
-
-
-seed()
-
-canvas = Canvas( width = W, height = H)
-
-canvas.pack(side = TOP)
-
-canvas.create_rectangle( 0, 0, W, H, fill = 'gray', width = 0)
-
-nHorizFactor = (W + 0.0) / (H + 0.0)
-
-nDiagFactor  = sqrt(H**2 + W**2) / (H + 0.0) 
-
-nMinR, nMaxR = ColourRange()
-
-nMinG, nMaxG = ColourRange()
-
-nMinB, nMaxB = ColourRange()
-
-Frac(nCover, VibrantHousePaint)
-
-print 'done'    
-## end of http://code.activestate.com/recipes/578051/ }}}
+if __name__ == "__main__":
+    main()
